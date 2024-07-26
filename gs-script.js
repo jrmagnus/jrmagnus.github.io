@@ -41,17 +41,24 @@ function generatepassword() {
 function formatmac() {
     var macaddress = document.getElementById("txtmac").value.trim();
     if (macaddress.length < 12 || macaddress.length > 17) {
-        alert("Macadress wrong length, input like, '01 23 45 67 89 0A' or '01234567890A'");
+        alert("Mac address wrong length, input like, '01 23 45 67 89 0A' or '01234567890A'");
         return;
     }
+
+    var macspacer = document.querySelector('input[name="radialicon"]:checked').id;
+    var spacerMap = {
+        spacer1: ':',
+        spacer2: '-',
+        spacer3: '.'
+    };
     
-    var macspacer = document.querySelector('input[name="radialicon"]:checked').value;
     macaddress = macaddress.toUpperCase().replace(/[\W_]/g, '');
     if (macaddress.match(/[G-Z]/g)) {
         alert("This isn't a valid MAC");
         return;
     }
-    macaddress = macaddress.match(/.{1,2}/g).join(macspacer);
+    
+    macaddress = macaddress.match(/.{1,2}/g).join(spacerMap[macspacer]);
     document.getElementById("txtmac").value = macaddress;
     document.getElementById("txtmac").select();
     document.execCommand("copy");
