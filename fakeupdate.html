@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRANK: Update Screen</title>
+    <style>
+        body {
+            background: #006dae;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: "Segoe UI Light", "Segoe UI", Arial;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            width: 500px;
+        }
+        .loader {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+        }
+        .circle {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.5s infinite;
+        }
+        .circle:after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .circle:nth-child(2) { animation-delay: 240ms; }
+        .circle:nth-child(3) { animation-delay: 480ms; }
+        .circle:nth-child(4) { animation-delay: 720ms; }
+        .circle:nth-child(5) { animation-delay: 960ms; }
+        @keyframes orbit {
+            0% { transform: rotate(225deg); opacity: 1; }
+            7% { transform: rotate(345deg); }
+            30% { transform: rotate(455deg); }
+            39% { transform: rotate(690deg); }
+            70% { transform: rotate(815deg); opacity: 1; }
+            75% { transform: rotate(945deg); }
+            76% { transform: rotate(945deg); opacity: 0; }
+            100% { transform: rotate(945deg); opacity: 0; }
+        }
+        #bottom {
+            position: fixed;
+            bottom: 10%;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        function enterFullscreen() {
+            const element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            enterFullscreen();
+            let count = 0;
+            let stage = 1;
+            const maxCount = 100;
+            const interval = 14830;
+            const timerElement = document.getElementById("timer");
+            const stageElement = document.getElementById("stage");
+            const refElement = document.getElementById("ref");
+
+            function updateTimer() {
+                count++;
+                if (count > maxCount) {
+                    stage++;
+                    count = 0;
+                }
+                if (stage > 3) {
+                    stageElement.textContent = "68";
+                    refElement.textContent = "Installing Updates";
+                } else {
+                    timerElement.textContent = `${count}%`;
+                    stageElement.textContent = `${stage}`;
+                }
+            }
+
+            setInterval(updateTimer, interval);
+
+            $(document).on('contextmenu keydown', function(e) {
+                e.preventDefault();
+            });
+
+            $(document).keyup(function(e) {
+                if (e.keyCode === 13 || e.keyCode === 8) {
+                    window.location.href = 'bsod.html';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <p><span id="ref">Working on updates</span> <span id="timer">1%</span> complete.<br>Don't turn off your PC. This will take a while.</p>
+        <div id="bottom">Your PC will restart several times</div>
+    </div>
+</body>
+</html>
