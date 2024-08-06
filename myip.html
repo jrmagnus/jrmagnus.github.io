@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Viewer</title>
+</head>
+<body>
+    <h1>Your IP Addresses</h1>
+    <p>IPv4: <span id="ipv4">Loading...</span></p>
+    <p>IPv6: <span id="ipv6">Loading...</span></p>
+
+    <script>
+        // Function to get IPv4 address
+        function getIPv4() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ipv4').textContent = data.ip;
+                })
+                .catch(error => {
+                    document.getElementById('ipv4').textContent = 'Error fetching IPv4';
+                    console.error('Error fetching IPv4:', error);
+                });
+        }
+
+        // Function to get IPv6 address
+        function getIPv6() {
+            fetch('https://api64.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ipv6').textContent = data.ip;
+                })
+                .catch(error => {
+                    document.getElementById('ipv6').textContent = 'Error fetching IPv6';
+                    console.error('Error fetching IPv6:', error);
+                });
+        }
+
+        // Call functions to get IP addresses
+        getIPv4();
+        getIPv6();
+    </script>
+</body>
+</html>
