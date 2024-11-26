@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metas Diárias</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            display: none; /* Esconde até autenticar */
+        }
+
+        .login-container {
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Autenticação</h1>
+        <input type="password" id="password" placeholder="Digite a senha">
+        <button onclick="authenticate()">Entrar</button>
+    </div>
+
+    <div class="container">
+        <h1>Metas do Dia</h1>
+        <ul id="goals-list">
+            <li>
+                <input type="checkbox" id="meta1" onchange="handleCheck('meta1')"> Entregar coisas para Equipes 
+                <span id="date-meta1" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+            <li>
+                <input type="checkbox" id="meta2" onchange="handleCheck('meta2')"> Colocar OS em dia 
+                <span id="date-meta2" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+            <li>
+                <input type="checkbox" id="meta3" onchange="handleCheck('meta3')"> Verificar Estoque 
+                <span id="date-meta3" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+            <li>
+                <input type="checkbox" id="meta3" onchange="handleCheck('meta3')"> Separar itens Equipes 
+                <span id="date-meta3" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+            <li>
+                <input type="checkbox" id="meta3" onchange="handleCheck('meta3')"> Verificar Pedidos 
+                <span id="date-meta3" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+            <li>
+                <input type="checkbox" id="meta3" onchange="handleCheck('meta3')"> Organizar Espaço 
+                <span id="date-meta3" style="font-size: 0.9em; color: gray;"></span>
+            </li>
+        </ul>
+        <button onclick="clearGoals()">Resetar Metas</button>
+    </div>
+
+    <script>
+        const PASSWORD_HASH = "ee76cad38ecf505c70c2cd5b3579a989"; // md5 para "password"
+
+        // Autenticação
+        function authenticate() {
+            const inputPassword = document.getElementById("password").value;
+            const inputHash = md5(inputPassword);
+
+            if (inputHash === PASSWORD_HASH) {
+                document.querySelector(".login-container").style.display = "none";
+                document.querySelector(".container").style.display = "block";
+                loadGoals();
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+
+        // Salvar estado e data ao marcar/desmarcar
+        function handleCheck(id) {
+            const checkbox = document.getElementById(id);
+            const dateSpan = document.getElementById(`date-${id}`);
+            const goals = JSON.parse(localStorage.getItem("goals")) || {};
+
+            if (checkbox.checked) {
+                const today = new Date().toLocaleDateString("pt-BR");
+                goals[id] = { checked: true, date: today };
+                dateSpan.textContent = `(Marcado em: ${today})`;
+            } else {
+                goals[id] = { checked: false, date: null };
+                dateSpan.textContent = "";
+            }
+
+            localStorage.setItem("goals", JSON.stringify(goals));
+        }
+
+        // Carregar estados dos checkboxes
+        function loadGoals() {
+            const goals = JSON.parse(localStorage.getItem("goals")) || {};
+
+            for (const [id, data] of Object.entries(goals)) {
+                const checkbox = document.getElementById(id);
+                const dateSpan = document.getElementById(`date-${id}`);
+                checkbox.checked = data.checked;
+
+                if (data.checked && data.date) {
+                    dateSpan.textContent = `(Marcado em: ${data.date})`;
+                } else {
+                    dateSpan.textContent = "";
+                }
+            }
+        }
+
+        // Resetar metas
+        function clearGoals() {
+            localStorage.removeItem("goals");
+            const checkboxes = document.querySelectorAll("input[type='checkbox']");
+            const spans = document.querySelectorAll("span[id^='date-']");
+
+            checkboxes.forEach(checkbox => (checkbox.checked = false));
+            spans.forEach(span => (span.textContent = ""));
+        }
+
+        // Função MD5 para hashing
+        function md5(string) {
+            return CryptoJS.MD5(string).toString();
+        }
+
+        // Biblioteca CryptoJS
+        document.addEventListener("DOMContentLoaded", () => {
+            const script = document.createElement("script");
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
+            document.body.appendChild(script);
+        });
+    </script>
+</body>
+</html>
