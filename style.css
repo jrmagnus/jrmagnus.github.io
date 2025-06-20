@@ -1,0 +1,145 @@
+/* CSS Personalizado inspirado no seu estilo original, com layout moderno */
+:root {
+    /* Tema Escuro (Original) */
+    --bg-color: linear-gradient(to bottom right, rgb(20, 20, 20), rgb(3, 0, 15));
+    --card-color: rgb(23, 23, 23);
+    --title-color: rgb(214, 211, 230);
+    --text-color: rgb(227, 225, 237);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --input-bg-color: transparent;
+    --input-border-color: rgb(227, 225, 237);
+}
+
+html[data-theme='light'] {
+    /* Tema Claro (Original) */
+    --bg-color: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(242, 242, 242));
+    --card-color: rgb(240, 240, 240);
+    --title-color: rgb(33, 33, 33);
+    --text-color: rgb(26, 26, 26);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --input-bg-color: transparent;
+    --input-border-color: rgb(26, 26, 26);
+}
+
+body {
+    background: var(--bg-color);
+    font-family: 'Raleway', sans-serif;
+    color: var(--text-color);
+    margin: 0;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header, footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--title-color);
+}
+
+main {
+    flex-grow: 1;
+}
+
+#cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 1rem 0;
+}
+
+.card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    width: 320px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--title-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-grow: 1; /* Faz o conteúdo crescer para preencher o espaço */
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 8px;
+    color: var(--text-color);
+    background-color: var(--input-bg-color);
+    border: none;
+    border-bottom: 2px solid var(--input-border-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-bottom-color: var(--title-color);
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+    margin-top: auto; /* Empurra o botão para o fundo do card */
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn:hover {
+    border-color: var(--text-color);
+    color: var(--title-color);
+}
+
+#passwordlist {
+    list-style-position: inside;
+    text-align: left;
+    overflow-y: auto;
+    max-height: 100px;
+    padding: 5px;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.footer-link {
+    color: var(--border-color);
+    text-decoration: none;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}

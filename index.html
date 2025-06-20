@@ -1,127 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Solutions - Ferramentas Úteis</title>
+    
+    <!-- Google Fonts: Raleway -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Raleway:wght@100;400&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="gs-style.css">
-    <title>General Solutions</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<header>
-    <h1>General Solutions</h1>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
     
-    <p>IPv4: <span id="ipv4">Loading...</span></p>
-    <p>IPv6: <span id="ipv6">Loading...</span></p>
-</header>
+    <!-- Link para o seu ficheiro CSS externo -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Script para AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381" crossorigin="anonymous"></script>
+</head>
 <body>
-    <div id="cards">
-        <div class="card" id="cardmacaddress"> <!-- Mac Address Card -->
-            <div class="carditems">
-                <div id="cardtitle" id="macaddress">
-                    Mac Address Formater
-                </div>
-                <div class="cardContent">
-                    <input type="text" class="form__input" id="txtmac" placeholder="MAC Address" required="" />
-                    <p>
-                        Symbol:
-                        <input type="radio" name="radialicon" id="spacer1" class="macspacer" checked>
-                        <label for="spacer1"> : </label>
-                        <input type="radio" name="radialicon" id="spacer2" class="macspacer">
-                        <label for="spacer1"> - </label>
-                        <input type="radio" name="radialicon" id="spacer3" class="macspacer">
-                        <label for="spacer1"> . </label>
-                    </p>
-                    <div class="buttonContainer">
-                        <input type="button" class="button" value="Format" id="btnmacaddress" onclick="formatmac()">
-                    </div>
+
+    <header>
+        <h1>Free Solutions</h1>
+        <p>Ferramentas úteis para o seu dia a dia.</p>
+        <p>IPv4: <span id="ipv4">Loading...</span></p>
+        <p>IPv6: <span id="ipv6">Loading...</span></p>
+    </header>
+
+    <main>
+        <div id="cards">
+            <!-- Card: Gerador de Nomes com IA -->
+            <div class="card">
+                <h2 class="card-title">Gerador de Nomes com IA</h2>
+                <div class="card-content">
+                    <label for="idea-topic">Tópico do Projeto:</label>
+                    <input type="text" id="idea-topic" class="form-input" placeholder="ex: uma app de jardinagem">
+                    <textarea id="gemini-result" class="form-textarea" placeholder="Nomes sugeridos aparecerão aqui..." readonly></textarea>
+                    <button class="btn" onclick="generateNames()">Gerar Nomes</button>
                 </div>
             </div>
-        </div>
-		
-        <div class="card" id="cardpasswordgenerator"> <!-- Password Generator Card -->
-            <div class="carditems">
-                <div id="cardtitle">
-                    Password Generator
-                </div>
-                <div class="cardContent" id="generatepassword">
-                    <div id="cardmenu">
-                        <div id="passwordsettings" class="passwordsettings">
-                            <input class="generatepasswordset" type="number" id="passwordquantity" value=1> Quantity
-                            <input class="generatepasswordset" type="number" id="passwordlength" value=12> Length
-                        </div>
+
+            <!-- Card: Gerador de Palavra-passe -->
+            <div class="card">
+                <h2 class="card-title">Gerador de Palavra-passe</h2>
+                <div class="card-content">
+                    <div>
+                        <input type="number" id="passwordquantity" value="1" class="form-input" style="width: 60px; display: inline-block;"> Quantidade
+                        <input type="number" id="passwordlength" value="12" class="form-input" style="width: 60px; display: inline-block;"> Comprimento
                     </div>
-                    <input type="text" id="txtgeneratepassword" name="generatepassword" placeholder="Password" readonly>
-                    <div class="charsselect" id="charsselect">
-                        <input type="checkbox" name="AaBb" id="charsletters" checked>
-                        <label for="charsletters">AaBb</label>
-                        <input type="checkbox" name="0123" id="charsnumbers" checked>
-                        <label for="charsnumbers">0123</label>
-                        <input type="checkbox" name="@#$!" id="charsspecials" checked>
-                        <label for="charsspecials">!@#$</label>
+                    <input type="text" id="txtgeneratepassword" placeholder="Palavra-passe segura..." class="form-input" readonly>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="charsletters" checked> Aa-Zz</label>
+                        <label><input type="checkbox" id="charsnumbers" checked> 0-9</label>
+                        <label><input type="checkbox" id="charsspecials" checked> !@#$</label>
                     </div>
-                    <div class="buttonContainer">
-						<input type="button" id="btngeneratepassword" class="button" value="Generate" onclick="generatepassword()">
-					</div>
                     <ol id="passwordlist"></ol>
+                    <button class="btn" onclick="generatepassword()">Gerar</button>
                 </div>
             </div>
-        </div>
 
-        <div class="card" id="cardcidrcalculator">
-            <div class="carditems">
-                <div id="cardtitle">
-                    CIDR Calculator
-                </div>
-                <div class="cardContent">
-                    <input id="cidrInput" placeholder="Range" class="form__input">
-                    <p class="cidrtxt">
-                        <span>Address Range:</span>
-                        <output id="ipRange"></output>
-                    </p>
-                    <p class="cidrtxt">
-                        <span>Usable Address:</span>
-                        <output id="DHCPrange"></output>
-                    </p>
-                    <div class="buttonContainer">
-                        <input type="button" class="button" value="Calculate" onclick="cidrCalculate()">
+            <!-- Card: Formatador de Endereço MAC -->
+            <div class="card">
+                <h2 class="card-title">Formatador de MAC</h2>
+                <div class="card-content">
+                    <input type="text" id="txtmac" placeholder="Cole o MAC aqui" class="form-input">
+                    <div class="radio-group">
+                        Símbolo:
+                        <label><input type="radio" name="radialicon" value=":" checked> :</label>
+                        <label><input type="radio" name="radialicon" value="-"> -</label>
+                        <label><input type="radio" name="radialicon" value="."> .</label>
                     </div>
+                    <button class="btn" onclick="formatmac()">Formatar e Copiar</button>
                 </div>
             </div>
-        </div>
 
-        <div class="card" id="cardusername"> <!-- Username Card -->
-            <div class="carditems">
-                <div class="cardtitle" id="cardtitle">
-                    Username Creator
-                </div>
-                <div class="cardContent">
-                    <input type="text" class="form__input" id="fullName" placeholder="Name" required="" />
-                    <input type="text" class="form__input" id="username" placeholder="Username" required="" readonly/>
-                    <input type="text" class="form__input" id="usernamesixchar" placeholder="User Six Char" required="" readonly/>
-                    <div class="buttonContainer">
-                        <input type="button" class="button" value="Create" id="btnusername" onclick="createUsername()">
+            <!-- Card: Calculadora CIDR IPv4 -->
+            <div class="card">
+                <h2 class="card-title">Calculadora CIDR IPv4</h2>
+                <div class="card-content">
+                    <input type="text" id="cidrInput" placeholder="ex: 192.168.0.1/24" class="form-input">
+                    <div>
+                        <p>Intervalo: <output id="ipRange"></output></p>
+                        <p>Utilizáveis: <output id="DHCPrange"></output></p>
                     </div>
+                    <button class="btn" onclick="cidrCalculate()">Calcular</button>
+                </div>
+            </div>
+
+            <!-- Card: Criador de Username -->
+            <div class="card">
+                <h2 class="card-title">Criador de Username</h2>
+                <div class="card-content">
+                    <input type="text" id="fullName" placeholder="Nome Completo" class="form-input">
+                    <input type="text" id="username" placeholder="Username sugerido" class="form-input" readonly>
+                    <input type="text" id="usernamesixchar" placeholder="Username 6 caracteres" class="form-input" readonly>
+                    <button class="btn" onclick="createUsername()">Criar e Copiar</button>
+                </div>
+            </div>
+            
+            <!-- Card: Calculadora Mistura Etanol -->
+            <div class="card">
+                <h2 class="card-title">Calculadora Mistura Etanol</h2>
+                <div class="card-content">
+                    <input type="number" id="gasliters" class="form-input" placeholder="Gasolina (Litros)">
+                    <input type="number" id="ethanolpercentgas" value="25" class="form-input" placeholder="% Etanol na Gasolina">
+                    <input type="number" id="ethanolliters" class="form-input" placeholder="Etanol Adicionado (L)">
+                    <h3>Resultado: <output id="mixresult">E 0.00</output></h3>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+    
     <footer>
-        <h3>
-            <svg aria-hidden="true" height="24" viewBox="0 0 16 16" version="1.1" width="24" data-view-component="true" class="octicon octicon-mark-github d-block mr-2 float-left">
-                <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
-            </svg>
-            <a class="linkgithub" href="https://github.com/jrmagnus/General-Solutions">GitHub</a>
-        </h3>
-        <div class="buttonContainer">
-            <input type="button" class="button" value="Theme" onclick="changeTheme()">	
-            <!--a href="ethanolmix.html" id="linkethanolmix" type="button">Ethanol Mix</a-->
-        </div>
+        <button class="btn" onclick="changeTheme()">Mudar Tema</button>
+        <p style="margin-top: 1rem;">
+            <a class="footer-link" href="https://github.com/jrmagnus/jrmagnus.github.io" target="_blank">Inspirado no projeto original no GitHub</a>
+        </p>
     </footer>
-<script src="gs-script.js"></script>
-<script src="myip.js"></script>
+
+    <!-- Link para o seu ficheiro JavaScript externo -->
+    <script src="script.js"></script>
+    <script src="myip.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381"
+     crossorigin="anonymous"></script>
 </body>
 </html>
