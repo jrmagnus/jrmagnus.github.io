@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Solutions - Ferramentas Úteis</title>
-    
+
     <!-- Google Fonts: Raleway -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <!-- Link para o seu ficheiro CSS externo -->
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- Script para AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381"
+        crossorigin="anonymous"></script>
 </head>
+
 <body>
 
     <header>
+        <div class="theme-selector">
+            <button class="theme-btn active" onclick="setTheme('antigravity')" aria-label="Tema Antigravity">
+                <div class="preview-box" style="background: #0f0c29;"></div>
+                <div class="preview-box" style="background: #302b63;"></div>
+            </button>
+            <button class="theme-btn" onclick="setTheme('light')" aria-label="Tema Claro">
+                <div class="preview-box" style="background: #f5f7fa;"></div>
+                <div class="preview-box" style="background: #c3cfe2;"></div>
+            </button>
+            <button class="theme-btn" onclick="setTheme('midnight')" aria-label="Tema Midnight">
+                <div class="preview-box" style="background: #000000;"></div>
+                <div class="preview-box" style="background: #434343;"></div>
+            </button>
+            <button class="theme-btn" onclick="setTheme('forest')" aria-label="Tema Forest">
+                <div class="preview-box" style="background: #134e5e;"></div>
+                <div class="preview-box" style="background: #71b280;"></div>
+            </button>
+        </div>
         <h1>Free Solutions</h1>
         <p>Ferramentas úteis para o seu dia a dia.</p>
         <p>IPv4: <span id="ipv4">Loading...</span></p>
@@ -29,11 +50,15 @@
         <div id="cards">
             <div class="card">
                 <div class="card-content">
-                    <h2 class="card-title">Gerador de Nomes com IA</h2>
-                    <label for="idea-topic">Tópico do Projeto:</label>
-                    <input type="text" id="idea-topic" class="form-input" placeholder="ex: uma app de jardinagem">
-                    <textarea id="gemini-result" class="form-textarea" placeholder="Nomes sugeridos aparecerão aqui..." readonly></textarea>
-                    <button class="btn" onclick="generateNames()">Gerar Nomes</button>
+                    <h2 class="card-title">Formatador de Texto</h2>
+                    <textarea id="textToFormat" class="form-textarea" placeholder="Digite seu texto aqui..."></textarea>
+                    <div class="button-group">
+                        <button class="btn-small" onclick="formatText('lowercase')">aaa</button>
+                        <button class="btn-small" onclick="formatText('uppercase')">AAA</button>
+                        <button class="btn-small" onclick="formatText('capitalize')">Aaa</button>
+                        <button class="btn-small" onclick="formatText('alternating')">aAa</button>
+                    </div>
+                    <button class="btn" onclick="copyFormattedText()">Copiar Texto</button>
                 </div>
             </div>
 
@@ -41,10 +66,13 @@
                 <div class="card-content">
                     <h2 class="card-title">Gerador de Palavra-passe</h2>
                     <div>
-                        <input type="number" id="passwordquantity" value="1" class="form-input" style="width: 60px; display: inline-block;"> Quantidade
-                        <input type="number" id="passwordlength" value="12" class="form-input" style="width: 60px; display: inline-block;"> Comprimento
+                        <input type="number" id="passwordquantity" value="1" class="form-input"
+                            style="width: 60px; display: inline-block;"> Quantidade
+                        <input type="number" id="passwordlength" value="12" class="form-input"
+                            style="width: 60px; display: inline-block;"> Comprimento
                     </div>
-                    <input type="text" id="txtgeneratepassword" placeholder="Palavra-passe segura..." class="form-input" readonly>
+                    <input type="text" id="txtgeneratepassword" placeholder="Palavra-passe segura..." class="form-input"
+                        readonly>
                     <div class="checkbox-group">
                         <label><input type="checkbox" id="charsletters" checked> Aa-Zz</label>
                         <label><input type="checkbox" id="charsnumbers" checked> 0-9</label>
@@ -86,40 +114,105 @@
                     <h2 class="card-title">Criador de Username</h2>
                     <input type="text" id="fullName" placeholder="Nome Completo" class="form-input">
                     <input type="text" id="username" placeholder="Username sugerido" class="form-input" readonly>
-                    <input type="text" id="usernamesixchar" placeholder="Username 6 caracteres" class="form-input" readonly>
+                    <input type="text" id="usernamesixchar" placeholder="Username 6 caracteres" class="form-input"
+                        readonly>
                     <button class="btn" onclick="createUsername()">Criar e Copiar</button>
                 </div>
             </div>
-            
+
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Calculadora Mistura Etanol</h2>
                     <input type="number" id="gasliters" class="form-input" placeholder="Gasolina (Litros)">
-                    <input type="number" id="ethanolpercentgas" value="25" class="form-input" placeholder="% Etanol na Gasolina">
+                    <input type="number" id="ethanolpercentgas" value="25" class="form-input"
+                        placeholder="% Etanol na Gasolina">
                     <input type="number" id="ethanolliters" class="form-input" placeholder="Etanol Adicionado (L)">
                     <h3>Resultado: <output id="mixresult">E 0.00</output></h3>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Conversor Timestamp</h2>
+                    <input type="number" id="timestampInput" class="form-input" placeholder="Unix Timestamp (segundos)">
+                    <input type="text" id="dateInput" class="form-input" placeholder="Data Legível (ISO ou local)">
+                    <div class="button-group">
+                        <button class="btn-small" onclick="tsToDate()">TS &rarr; Data</button>
+                        <button class="btn-small" onclick="dateToTs()">Data &rarr; TS</button>
+                    </div>
+                    <button class="btn" onclick="getCurrentTimestamp()">Agora</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Base64 Encoder</h2>
+                    <textarea id="base64Text" class="form-textarea" placeholder="Texto Normal"
+                        oninput="textToBase64()"></textarea>
+                    <textarea id="base64Output" class="form-textarea" placeholder="Base64"
+                        oninput="base64ToText()"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Formatador JSON</h2>
+                    <textarea id="jsonInput" class="form-textarea" placeholder="Cole seu JSON aqui..."></textarea>
+                    <button class="btn" onclick="formatJSON()">Formatar / Validar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Contador de Caracteres</h2>
+                    <textarea id="counterInput" class="form-textarea" placeholder="Digite algo..."
+                        oninput="updateCounter()"></textarea>
+                    <div style="display: flex; justify-content: space-around; text-align: center;">
+                        <div><strong id="charCount">0</strong><br><small>Chars</small></div>
+                        <div><strong id="wordCount">0</strong><br><small>Palavras</small></div>
+                        <div><strong id="lineCount">0</strong><br><small>Linhas</small></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Gerador de Hash</h2>
+                    <input type="text" id="hashInput" class="form-input" placeholder="Texto para hash">
+                    <div class="radio-group">
+                        <label><input type="radio" name="hashAlgo" value="SHA-1"> SHA-1</label>
+                        <label><input type="radio" name="hashAlgo" value="SHA-256" checked> SHA-256</label>
+                    </div>
+                    <input type="text" id="hashOutput" class="form-input" readonly placeholder="Hash gerado..."
+                        style="font-size: 0.8rem;">
+                    <button class="btn" onclick="generateHash()">Gerar Hash</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">Formatador de Localização</h2>
+                    <input type="text" id="locationInput" class="form-input"
+                        placeholder="Cole as coordenadas aqui (ex: 41°24'12.2&quot;N 2°10'26.5&quot;E)">
+                    <input type="text" id="locationOutput" class="form-input" readonly placeholder="Formato Google Maps"
+                        onclick="this.select()">
+                    <button class="btn" onclick="formatLocation()">Formatar e Copiar</button>
+                </div>
+            </div>
         </div>
     </main>
-    
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381"
-         crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <!-- down-block -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7780725949995381"
-         data-ad-slot="6227361331"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7780725949995381" data-ad-slot="6227361331"
+        data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 
     <footer>
-        <button class="btn" onclick="changeTheme()">Mudar Tema</button>
         <p style="margin-top: 1rem;">
-            <a class="footer-link" href="https://github.com/jrmagnus/jrmagnus.github.io" target="_blank">Inspirado no projeto original no GitHub</a>
+            <a class="footer-link" href="https://github.com/jrmagnus/jrmagnus.github.io" target="_blank">Inspirado no
+                projeto original no GitHub</a>
         </p>
     </footer>
 
@@ -127,6 +220,7 @@
     <script src="script.js"></script>
     <script src="myip.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381"
-     crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -1,81 +1,72 @@
 
 // --- LÓGICA DO EFEITO SPOTLIGHT ---
 document.getElementById("cards").onmousemove = e => {
-  for(const card of document.getElementsByClassName("card")) {
-    const rect = card.getBoundingClientRect(),
-          x = e.clientX - rect.left,
-          y = e.clientY - rect.top;
+    for (const card of document.getElementsByClassName("card")) {
+        const rect = card.getBoundingClientRect(),
+            x = e.clientX - rect.left,
+            y = e.clientY - rect.top;
 
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  };
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+    };
 }
 
 // --- LÓGICA DA API GEMINI ---
 
-async function generateNames() {
-    const topic = document.getElementById('idea-topic').value;
-    const resultArea = document.getElementById('gemini-result');
-    const button = document.querySelector('.card:first-child .btn');
+function formatText(type) {
+    const textArea = document.getElementById('textToFormat');
+    let text = textArea.value;
 
-    if (!topic) {
-        resultArea.value = "Por favor, insira um tópico para gerar nomes.";
-        return;
+    switch (type) {
+        case 'lowercase':
+            text = text.toLowerCase();
+            break;
+        case 'uppercase':
+            text = text.toUpperCase();
+            break;
+        case 'capitalize':
+            text = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+            break;
+        case 'alternating':
+            text = text.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('');
+            break;
     }
 
-    resultArea.value = "A gerar nomes criativos com IA...";
-    button.disabled = true;
+    textArea.value = text;
+}
 
-    const prompt = `Gere uma lista de 5 nomes de projetos criativos e curtos para o seguinte tópico: "${topic}". Responda apenas com a lista, um nome por linha.`;
-    
-    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-    const payload = { contents: chatHistory };
-    const apiKey = "" // A chave será fornecida pelo ambiente
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
+function copyFormattedText() {
+    const textArea = document.getElementById('textToFormat');
+    textArea.select();
     try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-        
-        if (result.candidates && result.candidates.length > 0 &&
-            result.candidates[0].content && result.candidates[0].content.parts &&
-            result.candidates[0].content.parts.length > 0) {
-            const text = result.candidates[0].content.parts[0].text;
-            resultArea.value = text;
-        } else {
-            resultArea.value = "Não foi possível gerar nomes. A resposta da IA estava vazia ou em formato inesperado.";
-        }
-    } catch (error) {
-        console.error("Erro na chamada da API Gemini:", error);
-        resultArea.value = "Ocorreu um erro ao comunicar com a IA. Por favor, tente novamente mais tarde.";
-    } finally {
-        button.disabled = false;
+        document.execCommand('copy');
+        // Optional: Visual feedback could be added here
+    } catch (err) {
+        console.error('Falha ao copiar: ', err);
     }
 }
 
 
 // --- LÓGICA PARA TROCA DE TEMA (Estilo Original) ---
-function changeTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'light') {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.removeItem('theme');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-    }
+// --- LÓGICA PARA TROCA DE TEMA ---
+function setTheme(themeName) {
+    document.documentElement.setAttribute('data-theme', themeName);
+    localStorage.setItem('theme', themeName);
+
+    // Atualiza os botões ativos
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick').includes(themeName)) {
+            btn.classList.add('active');
+        }
+    });
 }
 
 // Aplica o tema guardado ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    }
+    const savedTheme = localStorage.getItem('theme') || 'antigravity';
+    setTheme(savedTheme);
+
     // Inicia a calculadora de etanol e adiciona listeners
     mixEthanolCalc();
     const ethanolInputs = ['gasliters', 'ethanolpercentgas', 'ethanolliters'];
@@ -101,7 +92,7 @@ function generatepassword() {
     if (document.getElementById('charsletters').checked) chars += charsLetters;
     if (document.getElementById('charsnumbers').checked) chars += charsNumbers;
     if (document.getElementById('charsspecials').checked) chars += charsSpecial;
-    
+
     if (chars.length === 0) {
         alert("Por favor, selecione pelo menos um tipo de caractere.");
         return;
@@ -148,8 +139,8 @@ function formatmac() {
     macaddress = macaddress.toUpperCase().replace(/[^0-9A-F]/g, '');
 
     if (macaddress.length !== 12) {
-         alert("MAC Address inválido após a limpeza. Certifique-se de que contém 12 caracteres hexadecimais.");
-         return;
+        alert("MAC Address inválido após a limpeza. Certifique-se de que contém 12 caracteres hexadecimais.");
+        return;
     }
 
     macaddress = macaddress.replace(/(.{2})/g, "$1" + spacer).slice(0, -1);
@@ -177,8 +168,8 @@ function cidrCalculate() {
         const networkInt = ipInt & mask;
         const broadcastInt = networkInt | (~mask >>> 0);
 
-        const intToIp = (int) => `${(int>>>24)&255}.${(int>>>16)&255}.${(int>>>8)&255}.${int&255}`;
-        
+        const intToIp = (int) => `${(int >>> 24) & 255}.${(int >>> 16) & 255}.${(int >>> 8) & 255}.${int & 255}`;
+
         const firstIp = intToIp(networkInt);
         const lastIp = intToIp(broadcastInt);
 
@@ -191,7 +182,7 @@ function cidrCalculate() {
             const lastUsable = intToIp(broadcastInt - 1);
             document.getElementById("DHCPrange").textContent = `${firstUsable} - ${lastUsable}`;
         }
-    } catch(e) {
+    } catch (e) {
         document.getElementById("ipRange").textContent = "Inválido";
         document.getElementById("DHCPrange").textContent = "Inválido";
     }
@@ -202,11 +193,11 @@ function createUsername() {
     if (!fullName) return;
 
     const nameParts = fullName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().split(" ").filter(Boolean);
-    if(nameParts.length === 0) return;
+    if (nameParts.length === 0) return;
 
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
-    
+
     let username = `${firstName}.${lastName}`;
     let usernameSix = `${firstName.substring(0, Math.min(firstName.length, 3))}${lastName.substring(0, Math.min(lastName.length, 3))}`;
 
@@ -230,4 +221,152 @@ function mixEthanolCalc() {
     const totalVolume = petrolLiters + ethanolLiters;
     let finalMixPercent = (totalVolume > 0) ? (totalEthanol / totalVolume) * 100 : 0;
     document.getElementById('mixresult').textContent = "E " + finalMixPercent.toFixed(2);
+}
+
+// --- NOVAS FERRAMENTAS (Timestamp, Base64, JSON, Contador, Hash) ---
+
+// 1. Conversor Timestamp
+function getCurrentTimestamp() {
+    const now = new Date();
+    document.getElementById('timestampInput').value = Math.floor(now.getTime() / 1000);
+    document.getElementById('dateInput').value = now.toLocaleString();
+}
+
+function tsToDate() {
+    const ts = document.getElementById('timestampInput').value;
+    if (!ts) return;
+    const date = new Date(ts * 1000);
+    document.getElementById('dateInput').value = date.toLocaleString();
+}
+
+function dateToTs() {
+    const dateStr = document.getElementById('dateInput').value;
+    if (!dateStr) return;
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+        alert("Data inválida");
+        return;
+    }
+    document.getElementById('timestampInput').value = Math.floor(date.getTime() / 1000);
+}
+
+// 2. Base64 Encoder/Decoder
+function textToBase64() {
+    const text = document.getElementById('base64Text').value;
+    try {
+        document.getElementById('base64Output').value = btoa(text);
+    } catch (e) {
+        // Ignora erros de digitação incompleta ou caracteres inválidos temporários
+    }
+}
+
+function base64ToText() {
+    const base64 = document.getElementById('base64Output').value;
+    try {
+        document.getElementById('base64Text').value = atob(base64);
+    } catch (e) {
+        // Ignora erros
+    }
+}
+
+// 3. Formatador JSON
+function formatJSON() {
+    const input = document.getElementById('jsonInput');
+    try {
+        const obj = JSON.parse(input.value);
+        input.value = JSON.stringify(obj, null, 4);
+    } catch (e) {
+        alert("JSON Inválido: " + e.message);
+    }
+}
+
+// 4. Contador de Caracteres
+function updateCounter() {
+    const text = document.getElementById('counterInput').value;
+    document.getElementById('charCount').textContent = text.length;
+    document.getElementById('wordCount').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
+    document.getElementById('lineCount').textContent = text ? text.split(/\n/).length : 0;
+}
+
+// 5. Gerador de Hash
+async function generateHash() {
+    const text = document.getElementById('hashInput').value;
+    if (!text) return;
+
+    const algo = document.querySelector('input[name="hashAlgo"]:checked').value;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+
+    try {
+        const hashBuffer = await crypto.subtle.digest(algo, data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        document.getElementById('hashOutput').value = hashHex;
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao gerar hash");
+    }
+}
+
+// 6. Formatador de Localização
+function formatLocation() {
+    const input = document.getElementById('locationInput').value.trim();
+    const output = document.getElementById('locationOutput');
+
+    if (!input) return;
+
+    // Tenta extrair números de vários formatos
+    // Ex: 41°24'12.2"N 2°10'26.5"E
+    // Ex: 41 24 12.2 N 2 10 26.5 E
+    // Ex: 41.40338, 2.17403
+
+    let lat = 0, lng = 0;
+
+    // Regex para formato Decimal (ex: 41.40338, 2.17403)
+    const decimalRegex = /(-?\d+\.\d+)[,\s]+(-?\d+\.\d+)/;
+
+    // Regex para formato DMS (Graus, Minutos, Segundos)
+    // Aceita símbolos variados ou espaços
+    const dmsRegex = /(\d+)[°\s]+(\d+)[,.'\s]+(\d+(?:\.\d+)?)[,.'"\s]*([NSns])[,.\s]*(\d+)[°\s]+(\d+)[,.'\s]+(\d+(?:\.\d+)?)[,.'"\s]*([EWew])/;
+
+    const decimalMatch = input.match(decimalRegex);
+    const dmsMatch = input.match(dmsRegex);
+
+    if (decimalMatch) {
+        // Já está em decimal, apenas formata para o padrão Google Maps (lat, lng)
+        lat = parseFloat(decimalMatch[1]);
+        lng = parseFloat(decimalMatch[2]);
+    } else if (dmsMatch) {
+        // Converte DMS para Decimal
+        const latDeg = parseFloat(dmsMatch[1]);
+        const latMin = parseFloat(dmsMatch[2]);
+        const latSec = parseFloat(dmsMatch[3]);
+        const latDir = dmsMatch[4].toUpperCase();
+
+        const lngDeg = parseFloat(dmsMatch[5]);
+        const lngMin = parseFloat(dmsMatch[6]);
+        const lngSec = parseFloat(dmsMatch[7]);
+        const lngDir = dmsMatch[8].toUpperCase();
+
+        lat = latDeg + latMin / 60 + latSec / 3600;
+        if (latDir === 'S') lat = -lat;
+
+        lng = lngDeg + lngMin / 60 + lngSec / 3600;
+        if (lngDir === 'W') lng = -lng;
+    } else {
+        output.value = "Formato não reconhecido";
+        return;
+    }
+
+    // Formata para o padrão Google Maps: lat, lng (com 6 casas decimais)
+    const formatted = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    output.value = formatted;
+
+    // Copia para a área de transferência
+    output.select();
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Falha ao copiar', err);
+    }
 }
