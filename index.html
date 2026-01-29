@@ -123,81 +123,108 @@
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">Calculadora Mistura Etanol</h2>
-                    <input type="number" id="gasliters" class="form-input" placeholder="Gasolina (Litros)">
-                    <input type="number" id="ethanolpercentgas" value="25" class="form-input"
-                        placeholder="% Etanol na Gasolina">
-                    <input type="number" id="ethanolliters" class="form-input" placeholder="Etanol Adicionado (L)">
-                    <h3>Resultado: <output id="mixresult">E 0.00</output></h3>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Conversor Timestamp</h2>
-                    <input type="number" id="timestampInput" class="form-input" placeholder="Unix Timestamp (segundos)">
-                    <input type="text" id="dateInput" class="form-input" placeholder="Data Legível (ISO ou local)">
-                    <div class="button-group">
-                        <button class="btn-small" onclick="tsToDate()">TS &rarr; Data</button>
-                        <button class="btn-small" onclick="dateToTs()">Data &rarr; TS</button>
+
+                    <div class="radio-group" style="margin-bottom: 15px;">
+                        <label><input type="radio" name="calcMode" value="current" checked onchange="toggleCalcMode()">
+                            Calcular E%</label>
+                        <label><input type="radio" name="calcMode" value="desired" onchange="toggleCalcMode()"> Mistura
+                            Desejada</label>
                     </div>
-                    <button class="btn" onclick="getCurrentTimestamp()">Agora</button>
-                </div>
-            </div>
 
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Base64 Encoder</h2>
-                    <textarea id="base64Text" class="form-textarea" placeholder="Texto Normal"
-                        oninput="textToBase64()"></textarea>
-                    <textarea id="base64Output" class="form-textarea" placeholder="Base64"
-                        oninput="base64ToText()"></textarea>
-                </div>
-            </div>
+                    <div id="modeCurrent">
+                        <input type="number" id="gasliters" class="form-input" placeholder="Gasolina (Litros)">
+                        <input type="number" id="ethanolpercentgas" value="25" class="form-input"
+                            placeholder="% Etanol na Gasolina">
+                        <input type="number" id="ethanolliters" class="form-input" placeholder="Etanol Adicionado (L)">
+                        <h3>Resultado: <output id="mixresult">E 0.00</output></h3>
+                    </div>
 
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Formatador JSON</h2>
-                    <textarea id="jsonInput" class="form-textarea" placeholder="Cole seu JSON aqui..."></textarea>
-                    <button class="btn" onclick="formatJSON()">Formatar / Validar</button>
-                </div>
-            </div>
+                    <div id="modeDesired" style="display: none;">
+                        <input type="number" id="targetE" class="form-input"
+                            placeholder="Mistura Alvo (ex: 65 para E65)">
+                        <input type="number" id="currentGasE" value="27" class="form-input"
+                            placeholder="% Etanol na Gasolina Base">
+                        <input type="number" id="totalLiters" class="form-input"
+                            placeholder="Volume desejado no tanque (L)">
 
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Contador de Caracteres</h2>
-                    <textarea id="counterInput" class="form-textarea" placeholder="Digite algo..."
-                        oninput="updateCounter()"></textarea>
-                    <div style="display: flex; justify-content: space-around; text-align: center;">
-                        <div><strong id="charCount">0</strong><br><small>Chars</small></div>
-                        <div><strong id="wordCount">0</strong><br><small>Palavras</small></div>
-                        <div><strong id="lineCount">0</strong><br><small>Linhas</small></div>
+                        <div style="margin-top: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                            <p style="margin: 5px 0;">Abastecer com:</p>
+                            <p style="margin: 5px 0;"><strong>Etanol:</strong> <span id="reqEthanol">0.00</span> L</p>
+                            <p style="margin: 5px 0;"><strong>Gasolina:</strong> <span id="reqGas">0.00</span> L</p>
+                            <small id="impossibleMix" style="color: #ff6b6b; display: none;">Impossível atingir essa
+                                mistura apenas adicionando etanol.</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Gerador de Hash</h2>
-                    <input type="text" id="hashInput" class="form-input" placeholder="Texto para hash">
-                    <div class="radio-group">
-                        <label><input type="radio" name="hashAlgo" value="SHA-1"> SHA-1</label>
-                        <label><input type="radio" name="hashAlgo" value="SHA-256" checked> SHA-256</label>
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Conversor Timestamp</h2>
+                        <input type="number" id="timestampInput" class="form-input"
+                            placeholder="Unix Timestamp (segundos)">
+                        <input type="text" id="dateInput" class="form-input" placeholder="Data Legível (ISO ou local)">
+                        <div class="button-group">
+                            <button class="btn-small" onclick="tsToDate()">TS &rarr; Data</button>
+                            <button class="btn-small" onclick="dateToTs()">Data &rarr; TS</button>
+                        </div>
+                        <button class="btn" onclick="getCurrentTimestamp()">Agora</button>
                     </div>
-                    <input type="text" id="hashOutput" class="form-input" readonly placeholder="Hash gerado..."
-                        style="font-size: 0.8rem;">
-                    <button class="btn" onclick="generateHash()">Gerar Hash</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Base64 Encoder</h2>
+                        <textarea id="base64Text" class="form-textarea" placeholder="Texto Normal"
+                            oninput="textToBase64()"></textarea>
+                        <textarea id="base64Output" class="form-textarea" placeholder="Base64"
+                            oninput="base64ToText()"></textarea>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Formatador JSON</h2>
+                        <textarea id="jsonInput" class="form-textarea" placeholder="Cole seu JSON aqui..."></textarea>
+                        <button class="btn" onclick="formatJSON()">Formatar / Validar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Contador de Caracteres</h2>
+                        <textarea id="counterInput" class="form-textarea" placeholder="Digite algo..."
+                            oninput="updateCounter()"></textarea>
+                        <div style="display: flex; justify-content: space-around; text-align: center;">
+                            <div><strong id="charCount">0</strong><br><small>Chars</small></div>
+                            <div><strong id="wordCount">0</strong><br><small>Palavras</small></div>
+                            <div><strong id="lineCount">0</strong><br><small>Linhas</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Gerador de Hash</h2>
+                        <input type="text" id="hashInput" class="form-input" placeholder="Texto para hash">
+                        <div class="radio-group">
+                            <label><input type="radio" name="hashAlgo" value="SHA-1"> SHA-1</label>
+                            <label><input type="radio" name="hashAlgo" value="SHA-256" checked> SHA-256</label>
+                        </div>
+                        <input type="text" id="hashOutput" class="form-input" readonly placeholder="Hash gerado..."
+                            style="font-size: 0.8rem;">
+                        <button class="btn" onclick="generateHash()">Gerar Hash</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="card-title">Formatador de Localização</h2>
+                        <input type="text" id="locationInput" class="form-input"
+                            placeholder="Cole as coordenadas aqui (ex: 41°24'12.2&quot;N 2°10'26.5&quot;E)">
+                        <input type="text" id="locationOutput" class="form-input" readonly
+                            placeholder="Formato Google Maps" onclick="this.select()">
+                        <button class="btn" onclick="formatLocation()">Formatar e Copiar</button>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-content">
-                    <h2 class="card-title">Formatador de Localização</h2>
-                    <input type="text" id="locationInput" class="form-input"
-                        placeholder="Cole as coordenadas aqui (ex: 41°24'12.2&quot;N 2°10'26.5&quot;E)">
-                    <input type="text" id="locationOutput" class="form-input" readonly placeholder="Formato Google Maps"
-                        onclick="this.select()">
-                    <button class="btn" onclick="formatLocation()">Formatar e Copiar</button>
-                </div>
-            </div>
-        </div>
     </main>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7780725949995381"

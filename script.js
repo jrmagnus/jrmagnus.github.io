@@ -73,6 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ethanolInputs.forEach(id => {
         document.getElementById(id).addEventListener('input', mixEthanolCalc);
     });
+
+    // Listeners para o novo modo (Mistura Desejada)
+    calculateDesiredMix();
+    const desiredInputs = ['targetE', 'currentGasE', 'totalLiters'];
+    desiredInputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', calculateDesiredMix);
+    });
 });
 
 // --- LÓGICA DAS FERRAMENTAS ---
@@ -221,6 +228,67 @@ function mixEthanolCalc() {
     const totalVolume = petrolLiters + ethanolLiters;
     let finalMixPercent = (totalVolume > 0) ? (totalEthanol / totalVolume) * 100 : 0;
     document.getElementById('mixresult').textContent = "E " + finalMixPercent.toFixed(2);
+}
+
+function calculateDesiredMix() {
+    const targetE = parseFloat(document.getElementById('targetE').value) || 0;
+    const gasE = parseFloat(document.getElementById('currentGasE').value) || 0;
+    const totalLiters = parseFloat(document.getElementById('totalLiters').value) || 0;
+
+    const reqEthanolEl = document.getElementById('reqEthanol');
+    const reqGasEl = document.getElementById('reqGas');
+    const impossibleMsg = document.getElementById('impossibleMix');
+
+    // Formula derivation:
+    // Total Volume V_total = V_gas + V_eth
+    // Target Ethanol Content E_target = (V_gas * E_gas + V_eth * E_pure) / V_total
+    // Assuming E_pure = 1 (100% ethanol for the added part), though pump ethanol has water, usually we simplify or could ask for pump E%. 
+    // Usually "Ethanol" at pump is ~95-96% or treated as 100% for simple mixing math relative to Gasoline E27.
+    // Let's assume standard calculation where we are solving for how much of each to add to get a final percentage.
+
+    // Using simple approach:
+    // E_target = (V_eth * 1.0 + V_gas * (gasE/100)) / totalLiters
+    // And V_gas = totalLiters - V_eth
+    // E_target * totalLiters = V_eth + (totalLiters - V_eth) * (gasE/100)
+    // E_target * totalLiters = V_eth + totalLiters*(gasE/100) - V_eth*(gasE/100)
+    // E_target * totalLiters - totalLiters*(gasE/100) = V_eth * (1 - gasE/100)
+    // V_eth = totalLiters * (E_target/100 - gasE/100) / (1 - gasE/100)
+
+    const decimalTarget = targetE / 100;
+    const decimalGas = gasE / 100;
+
+    // Check if target is possible (must be >= base gas E%)
+    if (decimalTarget < decimalGas) {
+        impossibleMsg.style.display = 'block';
+        reqEthanolEl.textContent = "---";
+        reqGasEl.textContent = "---";
+        return;
+    } else {
+        impossibleMsg.style.display = 'none';
+    }
+
+    let vEth = totalLiters * (decimalTarget - decimalGas) / (1 - decimalGas);
+    let vGas = totalLiters - vEth;
+
+    if (vEth < 0) vEth = 0;
+    if (vGas < 0) vGas = 0;
+
+    reqEthanolEl.textContent = vEth.toFixed(2);
+    reqGasEl.textContent = vGas.toFixed(2);
+}
+
+function toggleCalcMode() {
+    const mode = document.querySelector('input[name="calcMode"]:checked').value;
+    const modeCurrent = document.getElementById('modeCurrent');
+    const modeDesired = document.getElementById('modeDesired');
+
+    if (mode === 'desired') {
+        modeCurrent.style.display = 'none';
+        modeDesired.style.display = 'block';
+    } else {
+        modeCurrent.style.display = 'block';
+        modeDesired.style.display = 'none';
+    }
 }
 
 // --- NOVAS FERRAMENTAS (Timestamp, Base64, JSON, Contador, Hash) ---
