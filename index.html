@@ -21,25 +21,21 @@
 
 <body>
 
-    <header>
-        <div class="theme-selector">
-            <button class="theme-btn active" onclick="setTheme('antigravity')" aria-label="Tema Antigravity">
-                <div class="preview-box" style="background: #0f0c29;"></div>
-                <div class="preview-box" style="background: #302b63;"></div>
-            </button>
-            <button class="theme-btn" onclick="setTheme('light')" aria-label="Tema Claro">
-                <div class="preview-box" style="background: #f5f7fa;"></div>
-                <div class="preview-box" style="background: #c3cfe2;"></div>
-            </button>
-            <button class="theme-btn" onclick="setTheme('midnight')" aria-label="Tema Midnight">
-                <div class="preview-box" style="background: #000000;"></div>
-                <div class="preview-box" style="background: #434343;"></div>
-            </button>
-            <button class="theme-btn" onclick="setTheme('forest')" aria-label="Tema Forest">
-                <div class="preview-box" style="background: #134e5e;"></div>
-                <div class="preview-box" style="background: #71b280;"></div>
-            </button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Free Solutions</a>
+            <div class="nav-links">
+                <div class="dropdown">
+                    <a href="#">APPs Criados</a>
+                    <div class="dropdown-content">
+                        <a href="MeoPonto/index.html">MeoPonto</a>
+                    </div>
+                </div>
+            </div>
         </div>
+    </nav>
+
+    <header>
         <h1>Free Solutions</h1>
         <p>Ferramentas úteis para o seu dia a dia.</p>
         <p>IPv4: <span id="ipv4">Loading...</span></p>
