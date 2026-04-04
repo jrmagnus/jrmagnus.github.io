@@ -81,6 +81,16 @@ body {
     display: inline-block;
 }
 
+/* Bridge the visual gap between the trigger and dropdown-content to keep hover state active */
+.dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 15px;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
