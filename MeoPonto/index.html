@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>MeoPonto | Rastreador de horas no iOS</title>
-    <meta name="description" content="O MeoPonto é um rastreador de horas trabalhadas e ponto pessoal construído de forma completamente nativa para o ecossistema iOS. Focado em minimalismo e eficiência.">
+    <title>MeoPonto | Controle de ponto para iOS</title>
+    <meta name="description" content="MeoPonto v2.1 - Controle de ponto minimalista para iOS. Registre horas com um toque, Dynamic Island, Widget, Siri Shortcuts, relatórios em PDF e muito mais.">
     <link rel="stylesheet" href="style.css">
-    <!-- Meta Theme Color for Safari -->
     <meta name="theme-color" content="#000000">
 </head>
 <body>
@@ -18,6 +17,7 @@
                     <a href="../index.html">Free Solutions</a>
                 </div>
                 <a href="#features">Recursos</a>
+                <a href="#pricing">Planos</a>
             </div>
         </div>
     </nav>
@@ -25,9 +25,10 @@
     <header class="hero">
         <div class="hero-glow"></div>
         <div class="hero-content fade-in-up">
+            <span class="version-badge">v2.1</span>
             <h1>O controle do seu tempo,<br>agora na sua mão.</h1>
-            <p>O rastreador de horas trabalhadas construído exclusivamente para o ecossistema iOS. Simples, focado e nativo.</p>
-            
+            <p>Controle de ponto minimalista, 100% nativo para iPhone. Registre, acompanhe e exporte suas horas com total privacidade.</p>
+
             <a href="https://apps.apple.com/br/app/meoponto/id6761626452" class="download-btn" target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 384 512" width="24" height="24" fill="currentColor">
                     <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
@@ -56,17 +57,18 @@
 
     <main id="features" class="features">
         <h2 class="section-title fade-in-up">Projetado para ser invisível.</h2>
-        
+
         <div class="bento-grid">
-            <!-- Inteligência e integração -->
+            <!-- Dynamic Island -->
             <div class="card fade-in-up delay-1">
                 <div class="card-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
+                        <line x1="12" y1="18" x2="12" y2="18"></line>
                     </svg>
                 </div>
                 <h3 class="card-title">Dynamic Island e Live Activities</h3>
-                <p class="card-desc">Sua vida não para. O MeoPonto utiliza as Live Activities do iPhone para exibir um cronômetro nativo rodando na Dynamic Island e na Tela Bloqueada, mesmo com o app fechado.</p>
+                <p class="card-desc">O MeoPonto utiliza as Live Activities para exibir um cronômetro nativo na Dynamic Island e na Tela Bloqueada, mesmo com o app fechado. Ative ou desative nas configurações.</p>
                 <div class="dynamic-island-mockup">
                     <div class="di-left">
                         <div class="di-dot"></div>
@@ -85,7 +87,7 @@
                     </svg>
                 </div>
                 <h3 class="card-title">Simplicidade extrema</h3>
-                <p class="card-desc">Bata o ponto com um simples "Entrar" e "Sair". Esqueceu de registrar? Sem problemas, arraste os cartões de histórico nativamente para o lado e edite suas horas com agilidade, sem perder um segundo.</p>
+                <p class="card-desc">Bata o ponto com um toque. Esqueceu de registrar? Arraste os cartões do histórico para o lado e edite data, hora de início e fim com agilidade.</p>
                 <div class="swipe-mockup">
                     <div style="font-weight: 600; color: #fff;">Quinta-feira, 3 de Abril</div>
                     <div style="color: #a1a1a6;">09:00 - 18:00</div>
@@ -106,8 +108,8 @@
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
                 </div>
-                <h3 class="card-title">Privacidade Total (Offline First)</h3>
-                <p class="card-desc">Seus dados são apenas seus. Nenhuma informação vai para nuvens de terceiros. Armazenamos seu histórico em segurança diretamente no seu aparelho através do poderoso banco de dados SwiftData.</p>
+                <h3 class="card-title">Privacidade total</h3>
+                <p class="card-desc">Seus dados ficam apenas no seu aparelho. Nenhuma informação vai para nuvens de terceiros. Armazenamento local com SwiftData.</p>
                 <div class="offline-mockup">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -116,8 +118,118 @@
                     </svg>
                 </div>
             </div>
+
+            <!-- Widget -->
+            <div class="card fade-in-up delay-1">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    </svg>
+                </div>
+                <h3 class="card-title">Widget na tela inicial</h3>
+                <p class="card-desc">Veja seu status diretamente na Home Screen e acesse o app com um toque. Simples, rápido e sem fricção.</p>
+            </div>
+
+            <!-- Siri & Control Center -->
+            <div class="card fade-in-up delay-2">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </div>
+                <h3 class="card-title">Siri e Central de Controle</h3>
+                <p class="card-desc">Inicie ou encerre o ponto por voz com Siri Shortcuts. Ou use o Control Center Widget para um toggle rápido sem abrir o app.</p>
+            </div>
+
+            <!-- PDF Reports -->
+            <div class="card fade-in-up delay-3">
+                <div class="card-icon icon-pro">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <h3 class="card-title">Relatórios em PDF <span class="pro-tag">Pro</span></h3>
+                <p class="card-desc">Exporte relatórios profissionais em PDF A4 com filtro por período, opção de incluir ou ocultar valores em reais, resumo de horas e ganhos, e compartilhamento direto.</p>
+            </div>
         </div>
     </main>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <h2 class="section-title fade-in-up">Escolha seu plano.</h2>
+        <p class="pricing-subtitle fade-in-up delay-1">Comece grátis. Evolua quando precisar.</p>
+
+        <div class="pricing-grid">
+            <!-- Free -->
+            <div class="pricing-card fade-in-up delay-1">
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Grátis</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$0</span>
+                    </div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Registro de ponto com um toque</li>
+                    <li>Histórico completo com edição</li>
+                    <li>Dynamic Island / Live Activity</li>
+                    <li>Widget na tela inicial</li>
+                    <li>Siri Shortcuts</li>
+                    <li>Control Center Widget</li>
+                    <li>Dados 100% offline</li>
+                </ul>
+                <a href="https://apps.apple.com/br/app/meoponto/id6761626452" class="pricing-cta" target="_blank" rel="noopener noreferrer">Baixar grátis</a>
+            </div>
+
+            <!-- Basic -->
+            <div class="pricing-card fade-in-up delay-2">
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Básico</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$0.99</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Tudo do plano Grátis</li>
+                    <li class="highlight">Definir valor da hora trabalhada</li>
+                    <li class="highlight">Visualizar ganhos por registro</li>
+                    <li class="highlight">Total de ganhos no histórico</li>
+                </ul>
+                <a href="https://apps.apple.com/br/app/meoponto/id6761626452" class="pricing-cta" target="_blank" rel="noopener noreferrer">Começar agora</a>
+            </div>
+
+            <!-- Pro -->
+            <div class="pricing-card featured fade-in-up delay-3">
+                <div class="pricing-badge">Mais popular</div>
+                <div class="pricing-header">
+                    <h3 class="pricing-name">Pro</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$1.99</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                </div>
+                <ul class="pricing-features">
+                    <li>Tudo do plano Básico</li>
+                    <li class="highlight">Exportação de relatórios em PDF</li>
+                    <li class="highlight">Filtro por período personalizado</li>
+                    <li class="highlight">Incluir/ocultar valores no PDF</li>
+                    <li class="highlight">Resumo de horas e ganhos</li>
+                    <li class="highlight">Compartilhamento direto</li>
+                </ul>
+                <a href="https://apps.apple.com/br/app/meoponto/id6761626452" class="pricing-cta cta-featured" target="_blank" rel="noopener noreferrer">Assinar Pro</a>
+            </div>
+        </div>
+    </section>
 
     <footer class="footer">
         <div class="footer-content">
@@ -160,11 +272,11 @@
         document.querySelectorAll('.fade-in-up').forEach((el) => {
             observer.observe(el);
         });
-        
-        // Setup initial timer values randomly for dynamic island mockup feel
+
+        // Dynamic Island timer mockup
         let seconds = parseInt(localStorage.getItem('mockTimer') || '15615');
         const timeDisplay = document.querySelector('.di-time');
-        
+
         if (timeDisplay) {
             setInterval(() => {
                 seconds++;
@@ -172,9 +284,9 @@
                 const h = Math.floor(seconds / 3600);
                 const m = Math.floor((seconds % 3600) / 60);
                 const s = seconds % 60;
-                timeDisplay.textContent = 
-                    (h < 10 ? '0' + h : h) + ':' + 
-                    (m < 10 ? '0' + m : m) + ':' + 
+                timeDisplay.textContent =
+                    (h < 10 ? '0' + h : h) + ':' +
+                    (m < 10 ? '0' + m : m) + ':' +
                     (s < 10 ? '0' + s : s);
             }, 1000);
         }
