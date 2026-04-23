@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Risco — DayTrade</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css?v=1.0">
+
+    <style>
+        .calc-container {
+            max-width: 540px;
+            margin: 100px auto 40px;
+            padding: 0 16px;
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .calc-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 4px;
+        }
+
+        .calc-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .calc-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .calc-section-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            margin: 0 0 14px;
+        }
+
+        /* Toggle buttons */
+        .calc-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .calc-toggle-btn {
+            flex: 1;
+            padding: 10px 0;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+
+        .calc-toggle-btn.active {
+            background: rgba(10, 132, 255, 0.2);
+            border-color: var(--accent-color);
+            color: #fff;
+        }
+
+        .calc-toggle-btn:hover:not(.active) {
+            border-color: var(--text-secondary);
+        }
+
+        .calc-toggle-btn small {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Fields */
+        .calc-field {
+            margin-bottom: 14px;
+        }
+
+        .calc-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .calc-field label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .calc-field input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.15s;
+            box-sizing: border-box;
+        }
+
+        .calc-field input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .calc-field .calc-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Results grid */
+        .calc-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .calc-result-box {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .calc-result-box .r-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .calc-result-box .r-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .r-blue {
+            color: var(--accent-color);
+        }
+
+        .r-red {
+            color: #ef4444;
+        }
+
+        .r-green {
+            color: #22c55e;
+        }
+
+        /* Fibonacci table */
+        .fib-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .fib-table th {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-align: left;
+            padding: 0 0 10px;
+            font-weight: 600;
+        }
+
+        .fib-table th:nth-child(2),
+        .fib-table td:nth-child(2) {
+            text-align: center;
+        }
+
+        .fib-table th:nth-child(3),
+        .fib-table td:nth-child(3) {
+            text-align: center;
+        }
+
+        .fib-table th:last-child,
+        .fib-table td:last-child {
+            text-align: right;
+        }
+
+        .fib-table td {
+            padding: 8px 0;
+            border-top: 1px solid var(--card-border);
+            font-size: 0.9rem;
+        }
+
+        .fib-pct-input {
+            width: 48px;
+            padding: 5px 4px;
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            text-align: center;
+            outline: none;
+        }
+
+        .fib-pct-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .fib-gain {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .fib-contracts {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Summary rows */
+        .calc-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 14px;
+        }
+
+        .calc-summary .s-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .calc-summary .s-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .summary-green {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .summary-green .s-value {
+            color: #22c55e;
+        }
+
+        .summary-blue {
+            background: rgba(10, 132, 255, 0.08);
+            border: 1px solid rgba(10, 132, 255, 0.25);
+        }
+
+        .summary-blue .s-value {
+            color: var(--accent-color);
+        }
+
+        .calc-reset-btn {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.7rem;
+            cursor: pointer;
+            float: right;
+            margin-top: -2px;
+            transition: var(--transition);
+        }
+
+        .calc-reset-btn:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .calc-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .calc-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Free Solutions</a>
+            <div class="nav-links">
+                <div class="dropdown">
+                    <a href="#">APPs Criados</a>
+                    <div class="dropdown-content">
+                        <a href="MeoPonto/index.html">MeoPonto</a>
+                        <a href="calculadora-risco.html">Calculadora Risco</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="calc-container">
+        <div class="calc-header">
+            <h1>Calculadora de Risco</h1>
+            <p>Gestao de risco para DayTrade — Mini Dolar e Mini Indice</p>
+        </div>
+
+        <!-- Ativo -->
+        <div class="calc-card">
+            <p class="calc-section-title">Ativo</p>
+            <div class="calc-toggle" id="ativo-group">
+                <button class="calc-toggle-btn active" data-value="WDO">Mini Dolar (WDO)<small>R$ 10,00/pt</small></button>
+                <button class="calc-toggle-btn" data-value="WIN">Mini Indice (WIN)<small>R$ 0,20/pt</small></button>
+            </div>
+        </div>
+
+        <!-- Tipo de calculo -->
+        <div class="calc-card">
+            <p class="calc-section-title">Tipo de Calculo</p>
+            <div class="calc-toggle" id="tipo-group">
+                <button class="calc-toggle-btn active" data-value="valor">Valor Fixo (R$)</button>
+                <button class="calc-toggle-btn" data-value="porcentagem">% do Capital</button>
+            </div>
+
+            <div id="campos-valor">
+                <div class="calc-field">
+                    <label>Valor de Risco (R$)</label>
+                    <input type="text" id="valor-risco" placeholder="Ex: 200" inputmode="decimal">
+                </div>
+            </div>
+
+            <div id="campos-porcentagem" class="calc-hidden">
+                <div class="calc-field">
+                    <label>Capital Total (R$)</label>
+                    <input type="text" id="capital" placeholder="Ex: 10000" inputmode="decimal">
+                </div>
+                <div class="calc-field">
+                    <label>Risco do Capital (%)</label>
+                    <input type="text" id="risco-pct" placeholder="Ex: 2" inputmode="decimal">
+                    <div class="calc-hint" id="risco-calculado"></div>
+                </div>
+            </div>
+
+            <div class="calc-field">
+                <label>Pontos de Risco (Stop Loss)</label>
+                <input type="text" id="pontos-risco" placeholder="Ex: 10" inputmode="decimal">
+            </div>
+        </div>
+
+        <!-- Resultado -->
+        <div class="calc-card">
+            <p class="calc-section-title">Resultado</p>
+            <div id="error-msg" class="calc-error calc-hidden"></div>
+            <div class="calc-results">
+                <div class="calc-result-box">
+                    <div class="r-label">Contratos</div>
+                    <div class="r-value r-blue" id="res-contratos">0</div>
+                </div>
+                <div class="calc-result-box">
+                    <div class="r-label">Risco / Contrato</div>
+                    <div class="r-value" id="res-risco-contrato">R$ 0,00</div>
+                </div>
+                <div class="calc-result-box">
+                    <div class="r-label">Risco Total</div>
+                    <div class="r-value r-red" id="res-risco-total">R$ 0,00</div>
+                </div>
+                <div class="calc-result-box">
+                    <div class="r-label">Valor de Risco</div>
+                    <div class="r-value" id="res-valor-risco">R$ 0,00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fibonacci -->
+        <div class="calc-card">
+            <p class="calc-section-title">
+                Alvos de Fibonacci
+                <button class="calc-reset-btn" id="reset-pct">Resetar %</button>
+            </p>
+            <table class="fib-table">
+                <thead>
+                    <tr>
+                        <th>Alvo</th>
+                        <th>Distrib.</th>
+                        <th>Contratos</th>
+                        <th>Ganho</th>
+                    </tr>
+                </thead>
+                <tbody id="fib-body"></tbody>
+            </table>
+            <div class="calc-summary summary-green">
+                <span class="s-label">Ganho Potencial Total</span>
+                <span class="s-value" id="ganho-total">R$ 0,00</span>
+            </div>
+            <div class="calc-summary summary-blue">
+                <span class="s-label">Risco / Retorno</span>
+                <span class="s-value" id="risco-retorno">—</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="margin-top: 1rem;">
+            <a class="footer-link" href="index.html">Voltar para Free Solutions</a>
+        </p>
+    </footer>
+
+    <script>
+        const FIBONACCI = [
+            { nivel: 0.618, nome: '61,8%' },
+            { nivel: 1.000, nome: '100%' },
+            { nivel: 1.618, nome: '161,8%' },
+            { nivel: 2.000, nome: '200%' },
+            { nivel: 2.618, nome: '261,8%' },
+        ];
+        const PCT_PADRAO = [35, 25, 20, 10, 10];
+
+        let ativo = 'WDO';
+        let tipoCalculo = 'valor';
+
+        // --- Toggles ---
+        function setupToggle(groupId, callback) {
+            const btns = document.querySelectorAll('#' + groupId + ' .calc-toggle-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    callback(btn.dataset.value);
+                });
+            });
+        }
+
+        setupToggle('ativo-group', v => { ativo = v; calcular(); });
+        setupToggle('tipo-group', v => {
+            tipoCalculo = v;
+            document.getElementById('campos-valor').classList.toggle('calc-hidden', v !== 'valor');
+            document.getElementById('campos-porcentagem').classList.toggle('calc-hidden', v !== 'porcentagem');
+            calcular();
+        });
+
+        // --- Build Fibonacci rows ---
+        const fibBody = document.getElementById('fib-body');
+        const pctInputs = [];
+
+        FIBONACCI.forEach((fib, i) => {
+            const tr = document.createElement('tr');
+
+            const tdAlvo = document.createElement('td');
+            tdAlvo.textContent = fib.nome;
+
+            const tdPct = document.createElement('td');
+            const inp = document.createElement('input');
+            inp.className = 'fib-pct-input';
+            inp.type = 'text';
+            inp.inputMode = 'decimal';
+            inp.value = PCT_PADRAO[i];
+            inp.addEventListener('input', calcular);
+            pctInputs.push(inp);
+            const span = document.createElement('span');
+            span.textContent = '%';
+            span.style.cssText = 'color:var(--text-secondary);font-size:0.8rem;margin-left:2px';
+            tdPct.appendChild(inp);
+            tdPct.appendChild(span);
+
+            const tdContratos = document.createElement('td');
+            tdContratos.className = 'fib-contracts';
+            tdContratos.id = 'fib-c-' + i;
+            tdContratos.textContent = '0';
+
+            const tdGanho = document.createElement('td');
+            tdGanho.className = 'fib-gain';
+            tdGanho.id = 'fib-g-' + i;
+            tdGanho.textContent = 'R$ 0,00';
+
+            tr.append(tdAlvo, tdPct, tdContratos, tdGanho);
+            fibBody.appendChild(tr);
+        });
+
+        document.getElementById('reset-pct').addEventListener('click', () => {
+            pctInputs.forEach((inp, i) => inp.value = PCT_PADRAO[i]);
+            calcular();
+        });
+
+        // --- Input listeners ---
+        ['valor-risco', 'capital', 'risco-pct', 'pontos-risco'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcular);
+        });
+
+        // --- Formatting ---
+        function fmt(v) {
+            return 'R$ ' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function parseNum(id) {
+            const v = document.getElementById(id).value.replace(/\./g, '').replace(',', '.');
+            const n = parseFloat(v);
+            return isNaN(n) ? NaN : n;
+        }
+
+        // --- Main calc ---
+        function calcular() {
+            const errEl = document.getElementById('error-msg');
+            errEl.classList.add('calc-hidden');
+
+            const pontosRisco = parseNum('pontos-risco');
+            if (isNaN(pontosRisco) || pontosRisco <= 0) {
+                mostrarVazio();
+                return;
+            }
+
+            let valorRisco;
+            if (tipoCalculo === 'valor') {
+                valorRisco = parseNum('valor-risco');
+                if (isNaN(valorRisco) || valorRisco <= 0) { mostrarVazio(); return; }
+            } else {
+                const capital = parseNum('capital');
+                const riscoPct = parseNum('risco-pct');
+                if (isNaN(capital) || capital <= 0 || isNaN(riscoPct) || riscoPct <= 0 || riscoPct > 100) {
+                    mostrarVazio();
+                    return;
+                }
+                valorRisco = capital * (riscoPct / 100);
+                document.getElementById('risco-calculado').textContent = 'Valor de risco: ' + fmt(valorRisco);
+            }
+
+            const valorPorPonto = ativo === 'WDO' ? 10.0 : 0.20;
+            const riscoPorContrato = pontosRisco * valorPorPonto;
+            const quantidade = Math.floor(valorRisco / riscoPorContrato);
+
+            if (quantidade < 1) {
+                errEl.textContent = 'Risco insuficiente para operar ao menos 1 contrato.';
+                errEl.classList.remove('calc-hidden');
+                mostrarVazio();
+                return;
+            }
+
+            const riscoTotal = quantidade * riscoPorContrato;
+
+            document.getElementById('res-contratos').textContent = quantidade;
+            document.getElementById('res-risco-contrato').textContent = fmt(riscoPorContrato);
+            document.getElementById('res-risco-total').textContent = fmt(riscoTotal);
+            document.getElementById('res-valor-risco').textContent = fmt(valorRisco);
+
+            // Fibonacci
+            let porcentagens = [];
+            let somaPct = 0;
+            for (let i = 0; i < 5; i++) {
+                let p = parseFloat(pctInputs[i].value.replace(',', '.'));
+                if (isNaN(p) || p < 0) p = 0;
+                porcentagens.push(p);
+                somaPct += p;
+            }
+
+            if (somaPct > 100) {
+                errEl.textContent = 'A soma das porcentagens dos alvos excede 100%.';
+                errEl.classList.remove('calc-hidden');
+            }
+
+            if (somaPct > 0 && somaPct < 100) {
+                porcentagens = porcentagens.map(p => (p / somaPct) * 100);
+            }
+
+            let ganhoTotal = 0;
+
+            if (quantidade >= 5) {
+                let distribuidos = 0;
+                let contratosPorAlvo = [0, 0, 0, 0, 0];
+
+                for (let i = 0; i < 5; i++) {
+                    if (porcentagens[i] > 0) {
+                        let c = Math.floor(quantidade * (porcentagens[i] / 100));
+                        if (c < 1) c = 1;
+                        contratosPorAlvo[i] = c;
+                        distribuidos += c;
+                    }
+                }
+
+                if (distribuidos !== quantidade) {
+                    let ultimo = -1;
+                    for (let i = 4; i >= 0; i--) {
+                        if (porcentagens[i] > 0) { ultimo = i; break; }
+                    }
+                    if (ultimo >= 0) contratosPorAlvo[ultimo] += (quantidade - distribuidos);
+                }
+
+                for (let i = 0; i < 5; i++) {
+                    const c = contratosPorAlvo[i];
+                    const pontosGanho = pontosRisco * FIBONACCI[i].nivel;
+                    const ganho = pontosGanho * valorPorPonto * c;
+                    ganhoTotal += ganho;
+                    document.getElementById('fib-c-' + i).textContent = c;
+                    document.getElementById('fib-g-' + i).textContent = fmt(ganho);
+                }
+            } else {
+                for (let i = 0; i < 5; i++) {
+                    if (i < quantidade) {
+                        const pontosGanho = pontosRisco * FIBONACCI[i].nivel;
+                        const ganho = pontosGanho * valorPorPonto;
+                        ganhoTotal += ganho;
+                        document.getElementById('fib-c-' + i).textContent = '1';
+                        document.getElementById('fib-g-' + i).textContent = fmt(ganho);
+                    } else {
+                        document.getElementById('fib-c-' + i).textContent = '0';
+                        document.getElementById('fib-g-' + i).textContent = 'R$ 0,00';
+                    }
+                }
+            }
+
+            document.getElementById('ganho-total').textContent = fmt(ganhoTotal);
+
+            const rrEl = document.getElementById('risco-retorno');
+            if (riscoTotal > 0 && ganhoTotal > 0) {
+                rrEl.textContent = '1 : ' + (ganhoTotal / riscoTotal).toFixed(2);
+            } else {
+                rrEl.textContent = '\u2014';
+            }
+        }
+
+        function mostrarVazio() {
+            document.getElementById('res-contratos').textContent = '0';
+            document.getElementById('res-risco-contrato').textContent = 'R$ 0,00';
+            document.getElementById('res-risco-total').textContent = 'R$ 0,00';
+            document.getElementById('res-valor-risco').textContent = 'R$ 0,00';
+            document.getElementById('ganho-total').textContent = 'R$ 0,00';
+            document.getElementById('risco-retorno').textContent = '\u2014';
+            for (let i = 0; i < 5; i++) {
+                document.getElementById('fib-c-' + i).textContent = '0';
+                document.getElementById('fib-g-' + i).textContent = 'R$ 0,00';
+            }
+        }
+
+        calcular();
+    </script>
+</body>
+
+</html>
