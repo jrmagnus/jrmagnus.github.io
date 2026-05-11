@@ -14,7 +14,7 @@
 
     <style>
         .calc-container {
-            max-width: 540px;
+            max-width: 1120px;
             margin: 100px auto 40px;
             padding: 0 16px;
         }
@@ -90,13 +90,6 @@
             border-color: var(--text-secondary);
         }
 
-        .calc-toggle-btn small {
-            display: block;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
         /* Fields */
         .calc-field {
             margin-bottom: 14px;
@@ -136,6 +129,36 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             margin-top: 4px;
+        }
+
+        /* Two-column asset layout */
+        .calc-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .calc-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .calc-column-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .calc-column-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
         }
 
         /* Results grid */
@@ -311,6 +334,16 @@
         .calc-hidden {
             display: none !important;
         }
+
+        @media (max-width: 900px) {
+            .calc-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .calc-container {
+                max-width: 540px;
+            }
+        }
     </style>
 </head>
 
@@ -337,16 +370,7 @@
             <p>Gestao de risco para DayTrade — Mini Dolar e Mini Indice</p>
         </div>
 
-        <!-- Ativo -->
-        <div class="calc-card">
-            <p class="calc-section-title">Ativo</p>
-            <div class="calc-toggle" id="ativo-group">
-                <button class="calc-toggle-btn active" data-value="WDO">Mini Dolar (WDO)<small>R$ 10,00/pt</small></button>
-                <button class="calc-toggle-btn" data-value="WIN">Mini Indice (WIN)<small>R$ 0,20/pt</small></button>
-            </div>
-        </div>
-
-        <!-- Tipo de calculo -->
+        <!-- Tipo de calculo (compartilhado) -->
         <div class="calc-card">
             <p class="calc-section-title">Tipo de Calculo</p>
             <div class="calc-toggle" id="tipo-group">
@@ -372,62 +396,137 @@
                     <div class="calc-hint" id="risco-calculado"></div>
                 </div>
             </div>
-
-            <div class="calc-field">
-                <label>Pontos de Risco (Stop Loss)</label>
-                <input type="text" id="pontos-risco" placeholder="Ex: 10" inputmode="decimal">
-            </div>
         </div>
 
-        <!-- Resultado -->
-        <div class="calc-card">
-            <p class="calc-section-title">Resultado</p>
-            <div id="error-msg" class="calc-error calc-hidden"></div>
-            <div class="calc-results">
-                <div class="calc-result-box">
-                    <div class="r-label">Contratos</div>
-                    <div class="r-value r-blue" id="res-contratos">0</div>
-                </div>
-                <div class="calc-result-box">
-                    <div class="r-label">Risco / Contrato</div>
-                    <div class="r-value" id="res-risco-contrato">R$ 0,00</div>
-                </div>
-                <div class="calc-result-box">
-                    <div class="r-label">Risco Total</div>
-                    <div class="r-value r-red" id="res-risco-total">R$ 0,00</div>
-                </div>
-                <div class="calc-result-box">
-                    <div class="r-label">Valor de Risco</div>
-                    <div class="r-value" id="res-valor-risco">R$ 0,00</div>
-                </div>
-            </div>
-        </div>
+        <!-- Sessoes lado a lado: WDO e WIN -->
+        <div class="calc-columns">
 
-        <!-- Fibonacci -->
-        <div class="calc-card">
-            <p class="calc-section-title">
-                Alvos de Fibonacci
-                <button class="calc-reset-btn" id="reset-pct">Resetar %</button>
-            </p>
-            <table class="fib-table">
-                <thead>
-                    <tr>
-                        <th>Alvo</th>
-                        <th>Distrib.</th>
-                        <th>Contratos</th>
-                        <th>Ganho</th>
-                    </tr>
-                </thead>
-                <tbody id="fib-body"></tbody>
-            </table>
-            <div class="calc-summary summary-green">
-                <span class="s-label">Ganho Potencial Total</span>
-                <span class="s-value" id="ganho-total">R$ 0,00</span>
+            <!-- ====== WDO ====== -->
+            <div>
+                <div class="calc-card">
+                    <div class="calc-column-header">
+                        <p class="calc-column-title">Mini Dolar (WDO)</p>
+                        <p class="calc-column-subtitle">R$ 10,00/pt</p>
+                    </div>
+                    <div class="calc-field">
+                        <label>Pontos de Risco (Stop Loss)</label>
+                        <input type="text" id="wdo-pontos-risco" placeholder="Ex: 10" inputmode="decimal">
+                    </div>
+                </div>
+
+                <div class="calc-card">
+                    <p class="calc-section-title">Resultado</p>
+                    <div id="wdo-error-msg" class="calc-error calc-hidden"></div>
+                    <div class="calc-results">
+                        <div class="calc-result-box">
+                            <div class="r-label">Contratos</div>
+                            <div class="r-value r-blue" id="wdo-res-contratos">0</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Risco / Contrato</div>
+                            <div class="r-value" id="wdo-res-risco-contrato">R$ 0,00</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Risco Total</div>
+                            <div class="r-value r-red" id="wdo-res-risco-total">R$ 0,00</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Valor de Risco</div>
+                            <div class="r-value" id="wdo-res-valor-risco">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-card">
+                    <p class="calc-section-title">
+                        Alvos de Fibonacci
+                        <button class="calc-reset-btn" data-reset="wdo">Resetar %</button>
+                    </p>
+                    <table class="fib-table">
+                        <thead>
+                            <tr>
+                                <th>Alvo</th>
+                                <th>Distrib.</th>
+                                <th>Contratos</th>
+                                <th>Ganho</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wdo-fib-body"></tbody>
+                    </table>
+                    <div class="calc-summary summary-green">
+                        <span class="s-label">Ganho Potencial Total</span>
+                        <span class="s-value" id="wdo-ganho-total">R$ 0,00</span>
+                    </div>
+                    <div class="calc-summary summary-blue">
+                        <span class="s-label">Risco / Retorno</span>
+                        <span class="s-value" id="wdo-risco-retorno">—</span>
+                    </div>
+                </div>
             </div>
-            <div class="calc-summary summary-blue">
-                <span class="s-label">Risco / Retorno</span>
-                <span class="s-value" id="risco-retorno">—</span>
+
+            <!-- ====== WIN ====== -->
+            <div>
+                <div class="calc-card">
+                    <div class="calc-column-header">
+                        <p class="calc-column-title">Mini Indice (WIN)</p>
+                        <p class="calc-column-subtitle">R$ 0,20/pt</p>
+                    </div>
+                    <div class="calc-field">
+                        <label>Pontos de Risco (Stop Loss)</label>
+                        <input type="text" id="win-pontos-risco" placeholder="Ex: 100" inputmode="decimal">
+                    </div>
+                </div>
+
+                <div class="calc-card">
+                    <p class="calc-section-title">Resultado</p>
+                    <div id="win-error-msg" class="calc-error calc-hidden"></div>
+                    <div class="calc-results">
+                        <div class="calc-result-box">
+                            <div class="r-label">Contratos</div>
+                            <div class="r-value r-blue" id="win-res-contratos">0</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Risco / Contrato</div>
+                            <div class="r-value" id="win-res-risco-contrato">R$ 0,00</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Risco Total</div>
+                            <div class="r-value r-red" id="win-res-risco-total">R$ 0,00</div>
+                        </div>
+                        <div class="calc-result-box">
+                            <div class="r-label">Valor de Risco</div>
+                            <div class="r-value" id="win-res-valor-risco">R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-card">
+                    <p class="calc-section-title">
+                        Alvos de Fibonacci
+                        <button class="calc-reset-btn" data-reset="win">Resetar %</button>
+                    </p>
+                    <table class="fib-table">
+                        <thead>
+                            <tr>
+                                <th>Alvo</th>
+                                <th>Distrib.</th>
+                                <th>Contratos</th>
+                                <th>Ganho</th>
+                            </tr>
+                        </thead>
+                        <tbody id="win-fib-body"></tbody>
+                    </table>
+                    <div class="calc-summary summary-green">
+                        <span class="s-label">Ganho Potencial Total</span>
+                        <span class="s-value" id="win-ganho-total">R$ 0,00</span>
+                    </div>
+                    <div class="calc-summary summary-blue">
+                        <span class="s-label">Risco / Retorno</span>
+                        <span class="s-value" id="win-risco-retorno">—</span>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -447,10 +546,15 @@
         ];
         const PCT_PADRAO = [35, 25, 20, 10, 10];
 
-        let ativo = 'WDO';
-        let tipoCalculo = 'valor';
+        const ATIVOS = {
+            wdo: { valorPorPonto: 10.0 },
+            win: { valorPorPonto: 0.20 },
+        };
 
-        // --- Toggles ---
+        let tipoCalculo = 'valor';
+        const fibInputs = { wdo: [], win: [] };
+
+        // --- Tipo toggle ---
         function setupToggle(groupId, callback) {
             const btns = document.querySelectorAll('#' + groupId + ' .calc-toggle-btn');
             btns.forEach(btn => {
@@ -462,60 +566,65 @@
             });
         }
 
-        setupToggle('ativo-group', v => { ativo = v; calcular(); });
         setupToggle('tipo-group', v => {
             tipoCalculo = v;
             document.getElementById('campos-valor').classList.toggle('calc-hidden', v !== 'valor');
             document.getElementById('campos-porcentagem').classList.toggle('calc-hidden', v !== 'porcentagem');
-            calcular();
+            calcularTudo();
         });
 
-        // --- Build Fibonacci rows ---
-        const fibBody = document.getElementById('fib-body');
-        const pctInputs = [];
+        // --- Build Fibonacci rows for both columns ---
+        function buildFibRows(key) {
+            const body = document.getElementById(key + '-fib-body');
+            FIBONACCI.forEach((fib, i) => {
+                const tr = document.createElement('tr');
 
-        FIBONACCI.forEach((fib, i) => {
-            const tr = document.createElement('tr');
+                const tdAlvo = document.createElement('td');
+                tdAlvo.textContent = fib.nome;
 
-            const tdAlvo = document.createElement('td');
-            tdAlvo.textContent = fib.nome;
+                const tdPct = document.createElement('td');
+                const inp = document.createElement('input');
+                inp.className = 'fib-pct-input';
+                inp.type = 'text';
+                inp.inputMode = 'decimal';
+                inp.value = PCT_PADRAO[i];
+                inp.addEventListener('input', calcularTudo);
+                fibInputs[key].push(inp);
+                const span = document.createElement('span');
+                span.textContent = '%';
+                span.style.cssText = 'color:var(--text-secondary);font-size:0.8rem;margin-left:2px';
+                tdPct.appendChild(inp);
+                tdPct.appendChild(span);
 
-            const tdPct = document.createElement('td');
-            const inp = document.createElement('input');
-            inp.className = 'fib-pct-input';
-            inp.type = 'text';
-            inp.inputMode = 'decimal';
-            inp.value = PCT_PADRAO[i];
-            inp.addEventListener('input', calcular);
-            pctInputs.push(inp);
-            const span = document.createElement('span');
-            span.textContent = '%';
-            span.style.cssText = 'color:var(--text-secondary);font-size:0.8rem;margin-left:2px';
-            tdPct.appendChild(inp);
-            tdPct.appendChild(span);
+                const tdContratos = document.createElement('td');
+                tdContratos.className = 'fib-contracts';
+                tdContratos.id = key + '-fib-c-' + i;
+                tdContratos.textContent = '0';
 
-            const tdContratos = document.createElement('td');
-            tdContratos.className = 'fib-contracts';
-            tdContratos.id = 'fib-c-' + i;
-            tdContratos.textContent = '0';
+                const tdGanho = document.createElement('td');
+                tdGanho.className = 'fib-gain';
+                tdGanho.id = key + '-fib-g-' + i;
+                tdGanho.textContent = 'R$ 0,00';
 
-            const tdGanho = document.createElement('td');
-            tdGanho.className = 'fib-gain';
-            tdGanho.id = 'fib-g-' + i;
-            tdGanho.textContent = 'R$ 0,00';
+                tr.append(tdAlvo, tdPct, tdContratos, tdGanho);
+                body.appendChild(tr);
+            });
+        }
 
-            tr.append(tdAlvo, tdPct, tdContratos, tdGanho);
-            fibBody.appendChild(tr);
-        });
+        buildFibRows('wdo');
+        buildFibRows('win');
 
-        document.getElementById('reset-pct').addEventListener('click', () => {
-            pctInputs.forEach((inp, i) => inp.value = PCT_PADRAO[i]);
-            calcular();
+        document.querySelectorAll('.calc-reset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.reset;
+                fibInputs[key].forEach((inp, i) => inp.value = PCT_PADRAO[i]);
+                calcularTudo();
+            });
         });
 
         // --- Input listeners ---
-        ['valor-risco', 'capital', 'risco-pct', 'pontos-risco'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calcular);
+        ['valor-risco', 'capital', 'risco-pct', 'wdo-pontos-risco', 'win-pontos-risco'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcularTudo);
         });
 
         // --- Formatting ---
@@ -529,55 +638,62 @@
             return isNaN(n) ? NaN : n;
         }
 
+        function getValorRisco() {
+            if (tipoCalculo === 'valor') {
+                return parseNum('valor-risco');
+            }
+            const capital = parseNum('capital');
+            const riscoPct = parseNum('risco-pct');
+            if (isNaN(capital) || capital <= 0 || isNaN(riscoPct) || riscoPct <= 0 || riscoPct > 100) {
+                document.getElementById('risco-calculado').textContent = '';
+                return NaN;
+            }
+            const v = capital * (riscoPct / 100);
+            document.getElementById('risco-calculado').textContent = 'Valor de risco: ' + fmt(v);
+            return v;
+        }
+
         // --- Main calc ---
-        function calcular() {
-            const errEl = document.getElementById('error-msg');
+        function calcularTudo() {
+            const valorRisco = getValorRisco();
+            calcularAtivo('wdo', valorRisco);
+            calcularAtivo('win', valorRisco);
+        }
+
+        function calcularAtivo(key, valorRisco) {
+            const errEl = document.getElementById(key + '-error-msg');
             errEl.classList.add('calc-hidden');
 
-            const pontosRisco = parseNum('pontos-risco');
-            if (isNaN(pontosRisco) || pontosRisco <= 0) {
-                mostrarVazio();
+            const pontosRisco = parseNum(key + '-pontos-risco');
+            if (isNaN(valorRisco) || valorRisco <= 0 || isNaN(pontosRisco) || pontosRisco <= 0) {
+                mostrarVazio(key);
                 return;
             }
 
-            let valorRisco;
-            if (tipoCalculo === 'valor') {
-                valorRisco = parseNum('valor-risco');
-                if (isNaN(valorRisco) || valorRisco <= 0) { mostrarVazio(); return; }
-            } else {
-                const capital = parseNum('capital');
-                const riscoPct = parseNum('risco-pct');
-                if (isNaN(capital) || capital <= 0 || isNaN(riscoPct) || riscoPct <= 0 || riscoPct > 100) {
-                    mostrarVazio();
-                    return;
-                }
-                valorRisco = capital * (riscoPct / 100);
-                document.getElementById('risco-calculado').textContent = 'Valor de risco: ' + fmt(valorRisco);
-            }
-
-            const valorPorPonto = ativo === 'WDO' ? 10.0 : 0.20;
+            const valorPorPonto = ATIVOS[key].valorPorPonto;
             const riscoPorContrato = pontosRisco * valorPorPonto;
             const quantidade = Math.floor(valorRisco / riscoPorContrato);
 
             if (quantidade < 1) {
                 errEl.textContent = 'Risco insuficiente para operar ao menos 1 contrato.';
                 errEl.classList.remove('calc-hidden');
-                mostrarVazio();
+                mostrarVazio(key);
                 return;
             }
 
             const riscoTotal = quantidade * riscoPorContrato;
 
-            document.getElementById('res-contratos').textContent = quantidade;
-            document.getElementById('res-risco-contrato').textContent = fmt(riscoPorContrato);
-            document.getElementById('res-risco-total').textContent = fmt(riscoTotal);
-            document.getElementById('res-valor-risco').textContent = fmt(valorRisco);
+            document.getElementById(key + '-res-contratos').textContent = quantidade;
+            document.getElementById(key + '-res-risco-contrato').textContent = fmt(riscoPorContrato);
+            document.getElementById(key + '-res-risco-total').textContent = fmt(riscoTotal);
+            document.getElementById(key + '-res-valor-risco').textContent = fmt(valorRisco);
 
             // Fibonacci
+            const inputs = fibInputs[key];
             let porcentagens = [];
             let somaPct = 0;
             for (let i = 0; i < 5; i++) {
-                let p = parseFloat(pctInputs[i].value.replace(',', '.'));
+                let p = parseFloat(inputs[i].value.replace(',', '.'));
                 if (isNaN(p) || p < 0) p = 0;
                 porcentagens.push(p);
                 somaPct += p;
@@ -620,8 +736,8 @@
                     const pontosGanho = pontosRisco * FIBONACCI[i].nivel;
                     const ganho = pontosGanho * valorPorPonto * c;
                     ganhoTotal += ganho;
-                    document.getElementById('fib-c-' + i).textContent = c;
-                    document.getElementById('fib-g-' + i).textContent = fmt(ganho);
+                    document.getElementById(key + '-fib-c-' + i).textContent = c;
+                    document.getElementById(key + '-fib-g-' + i).textContent = fmt(ganho);
                 }
             } else {
                 for (let i = 0; i < 5; i++) {
@@ -629,39 +745,39 @@
                         const pontosGanho = pontosRisco * FIBONACCI[i].nivel;
                         const ganho = pontosGanho * valorPorPonto;
                         ganhoTotal += ganho;
-                        document.getElementById('fib-c-' + i).textContent = '1';
-                        document.getElementById('fib-g-' + i).textContent = fmt(ganho);
+                        document.getElementById(key + '-fib-c-' + i).textContent = '1';
+                        document.getElementById(key + '-fib-g-' + i).textContent = fmt(ganho);
                     } else {
-                        document.getElementById('fib-c-' + i).textContent = '0';
-                        document.getElementById('fib-g-' + i).textContent = 'R$ 0,00';
+                        document.getElementById(key + '-fib-c-' + i).textContent = '0';
+                        document.getElementById(key + '-fib-g-' + i).textContent = 'R$ 0,00';
                     }
                 }
             }
 
-            document.getElementById('ganho-total').textContent = fmt(ganhoTotal);
+            document.getElementById(key + '-ganho-total').textContent = fmt(ganhoTotal);
 
-            const rrEl = document.getElementById('risco-retorno');
+            const rrEl = document.getElementById(key + '-risco-retorno');
             if (riscoTotal > 0 && ganhoTotal > 0) {
                 rrEl.textContent = '1 : ' + (ganhoTotal / riscoTotal).toFixed(2);
             } else {
-                rrEl.textContent = '\u2014';
+                rrEl.textContent = '—';
             }
         }
 
-        function mostrarVazio() {
-            document.getElementById('res-contratos').textContent = '0';
-            document.getElementById('res-risco-contrato').textContent = 'R$ 0,00';
-            document.getElementById('res-risco-total').textContent = 'R$ 0,00';
-            document.getElementById('res-valor-risco').textContent = 'R$ 0,00';
-            document.getElementById('ganho-total').textContent = 'R$ 0,00';
-            document.getElementById('risco-retorno').textContent = '\u2014';
+        function mostrarVazio(key) {
+            document.getElementById(key + '-res-contratos').textContent = '0';
+            document.getElementById(key + '-res-risco-contrato').textContent = 'R$ 0,00';
+            document.getElementById(key + '-res-risco-total').textContent = 'R$ 0,00';
+            document.getElementById(key + '-res-valor-risco').textContent = 'R$ 0,00';
+            document.getElementById(key + '-ganho-total').textContent = 'R$ 0,00';
+            document.getElementById(key + '-risco-retorno').textContent = '—';
             for (let i = 0; i < 5; i++) {
-                document.getElementById('fib-c-' + i).textContent = '0';
-                document.getElementById('fib-g-' + i).textContent = 'R$ 0,00';
+                document.getElementById(key + '-fib-c-' + i).textContent = '0';
+                document.getElementById(key + '-fib-g-' + i).textContent = 'R$ 0,00';
             }
         }
 
-        calcular();
+        calcularTudo();
     </script>
 </body>
 
